@@ -13,5 +13,8 @@
     "status"
   ],
   "author": "Jens Jäger",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^3.17.0"
+  }
 }
