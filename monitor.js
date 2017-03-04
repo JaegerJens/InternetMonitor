@@ -8,11 +8,20 @@ const config = {
     interval: 10000
 };
 
-for(var endpoint of config.requests) {
-    console.log('request ' + endpoint);
-    var start = process.hrtime();
-    fetch(endpoint).then(res => {
-        var duration = process.hrtime(start);
-        console.log('duration: ' + duration);
+for(let endpoint of config.requests) {
+    timeRequest(endpoint);
+}
+
+function timeRequest(url) {
+    console.log(timestamp() + 'start request ' + url);
+    let start = process.hrtime();
+    fetch(url).then(res => {
+        let duration = process.hrtime(start);
+        console.log(timestamp() + 'duration of request ' + url +' ### ' + duration);
     })
+}
+
+function timestamp() {
+    let now = new Date();
+    return '[' + now.toISOString() + '] ';
 }
