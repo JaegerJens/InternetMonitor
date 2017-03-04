@@ -23,13 +23,18 @@ function run(config) {
 function timeRequest(url) {
     logEvent('start request ' + url);
     let start = process.hrtime();
-    fetch(url).then(res => {
+    fetch(url)
+    .then(res => {
         if (!res.ok) {
             logEvent('HTTP ERROR: ' + res.statusText + ' for ' + url);
+        } else {
+            let duration = toMilliseconds(process.hrtime(start));
+            logEvent('duration of request ' + url +' ### ' + duration + ' ms');
         }
-        let duration = toMilliseconds(process.hrtime(start));
-        logEvent('duration of request ' + url +' ### ' + duration + ' ms');
     })
+    .catch(ex => {
+        logEvent('FETCH ERROR: ' + ex);
+    });
 }
 
 function timestamp() {
