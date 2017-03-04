@@ -21,6 +21,9 @@ function timeRequest(url) {
     console.log(timestamp() + 'start request ' + url);
     let start = process.hrtime();
     fetch(url).then(res => {
+        if (!res.ok) {
+            console.log('HTTP ERROR: ' + res.statusText)
+        }
         let duration = toMilliseconds(process.hrtime(start));
         console.log(timestamp() + 'duration of request ' + url +' ### ' + duration + ' ms');
     })
