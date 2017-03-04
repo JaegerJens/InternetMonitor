@@ -1,0 +1,8 @@
+{
+    "requests": [
+        "http://192.168.178.1/css/rd/images/fritzLogo.svg",
+        "https://www.heise.de/avw-bin/ivw/CP/marston/"
+    ],
+    "interval": 3000,
+    "output": "./log/status.log"
+}

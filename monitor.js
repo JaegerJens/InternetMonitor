@@ -2,23 +2,19 @@ const fetch = require('node-fetch');
 const fs = require('fs');
 const os = require('os');
 
+const configFile = 'monitor.config.json';
 const milli = 1000;
 const nano = milli * milli * milli;
 
-const config = {
-    requests: [
-        'http://192.168.178.1/css/rd/images/fritzLogo.svg',
-        'https://www.heise.de/avw-bin/ivw/CP/marston/'
-    ],
-    interval: 3 * milli, // milliseconds
-    output: './log/status.log'
-};
+var outputStream = undefined;
 
-const outputStream = createOutputStream(config.output);
-setInterval(run, config.interval);
+readConfig()
+    .then((config) => {
+        outputStream = createOutputStream(config.output);
+        setInterval(run, config.interval, config);
+    });
 
-
-function run() {
+function run(config) {
     for(let endpoint of config.requests) {
         timeRequest(endpoint);
     }
@@ -62,4 +58,16 @@ function logEvent(event) {
 
 function createOutputStream(filename) {
     return fs.createWriteStream(filename, {encoding: 'utf8', flags: 'a'});
+}
+
+function readConfig() {
+    return new Promise((resolve, reject) => {
+        fs.readFile(configFile, 'utf8', (err, data) => {
+            if (err) {
+                reject(err);
+            }
+            let config = JSON.parse(data);
+            resolve(config);
+        })
+    });
 }
