@@ -1,4 +1,5 @@
 const fetch = require('node-fetch');
+const colors = require('colors');
 const fs = require('fs');
 const os = require('os');
 
@@ -21,20 +22,32 @@ function run(config) {
 }
 
 function timeRequest(url) {
-    logEvent('start request ' + url);
+    logEvent('start request '.grey + url.blue);
     let start = process.hrtime();
     fetch(url)
     .then(res => {
         if (!res.ok) {
-            logEvent('HTTP ERROR: ' + res.statusText + ' for ' + url);
+            logEvent(colors.red('HTTP ERROR: ' + res.statusText + ' for ') + url.blue);
         } else {
             let duration = toMilliseconds(process.hrtime(start));
-            logEvent('duration of request ' + url +' ### ' + duration + ' ms');
+            var col = evaluateDuration(duration);
+            logEvent(col('duration of request ') + url.blue + col(' ### ' + duration + ' ms'));
         }
     })
     .catch(ex => {
-        logEvent('FETCH ERROR: ' + ex);
+        logEvent('FETCH ERROR: '.red + ex.red);
     });
+}
+
+function evaluateDuration(timespan) {
+    let col = colors.green;
+    if (timespan > 100) {
+        col = colors.yellow;
+    }
+    if (timespan > 200) {
+        col = colors.red;
+    }
+    return col;
 }
 
 function timestamp() {
@@ -48,11 +61,12 @@ function toMilliseconds(hrtime) {
 }
 
 function logEvent(event) {
-    let text = timestamp() + event;
+    let text = colors.magenta(timestamp()) + event;
     console.log(text);
     const eol = os.EOL;
+    let cleanText = colors.stripColors(text);
     return new Promise((resolve, reject) => {
-        outputStream.write(text + eol, null, err => {
+        outputStream.write(cleanText + eol, null, err => {
             if (err) {
                 reject(err);
             }
@@ -63,7 +77,7 @@ function logEvent(event) {
 
 function createOutputStream(filename) {
     const logFile = replaceDate(filename);
-    console.log(`Logfile output: ${logFile}`);
+    console.log(`Logfile output: ${logFile}`.grey);
     return fs.createWriteStream(logFile, {encoding: 'utf8', flags: 'a'});
 }
 

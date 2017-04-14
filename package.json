@@ -15,6 +15,7 @@
   "author": "Jens Jäger",
   "license": "ISC",
   "devDependencies": {
+    "colors": "^1.1.2",
     "eslint": "^3.17.0"
   },
   "dependencies": {
