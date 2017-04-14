@@ -62,7 +62,21 @@ function logEvent(event) {
 }
 
 function createOutputStream(filename) {
-    return fs.createWriteStream(filename, {encoding: 'utf8', flags: 'a'});
+    const logFile = replaceDate(filename);
+    console.log(`Logfile output: ${logFile}`);
+    return fs.createWriteStream(logFile, {encoding: 'utf8', flags: 'a'});
+}
+
+function replaceDate(filename) {
+    const variable = "{date}";
+    let now = getNowDate();
+    return filename.replace(variable, now);
+}
+
+function getNowDate() {
+    var now = new Date();
+    var iso = now.toISOString().slice(0,10).replace(/-/g,'');
+    return iso;
 }
 
 function readConfig() {

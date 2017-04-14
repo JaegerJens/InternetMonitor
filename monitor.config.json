@@ -4,5 +4,5 @@
         "http://www.spiegel.de/static/sys/dimensionspixel.gif"
     ],
     "interval": 3000,
-    "output": "./log/status.log"
+    "output": "./log/status.{date}.log"
 }
