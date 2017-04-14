@@ -16,5 +16,8 @@
   "license": "ISC",
   "devDependencies": {
     "eslint": "^3.17.0"
+  },
+  "dependencies": {
+    "node-fetch": "^1.6.3"
   }
 }
