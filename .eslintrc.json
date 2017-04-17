@@ -1,6 +1,7 @@
 {
+    "extends": "eslint:recommended",
     "env": {
-        "browser": true,
+        "browser": false,
         "commonjs": true,
         "es6": true,
         "node": true
@@ -9,15 +10,9 @@
         "ecmaFeatures": {
             "jsx": false
         },
-        "sourceType": "module"
+        "sourceType": "script"
     },
     "rules": {
-        "no-const-assign": "warn",
-        "no-this-before-super": "warn",
-        "no-undef": "warn",
-        "no-unreachable": "warn",
-        "no-unused-vars": "warn",
-        "constructor-super": "warn",
-        "valid-typeof": "warn"
+        "no-console": "off"
     }
 }
