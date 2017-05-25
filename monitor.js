@@ -1,4 +1,3 @@
-"use strict";
 const fetch = require('node-fetch');
 const colors = require('colors');
 const fs = require('fs');
@@ -24,22 +23,22 @@ function run(config) {
     }
 }
 
-function timeRequest(url) {
-    logEvent('start request '.grey + url.blue);
+async function timeRequest(url) {
+    await logEvent('start request '.grey + url.blue);
     let start = process.hrtime();
-    fetch(url)
-    .then(res => {
+    try {
+        const res = await fetch(url);
         if (!res.ok) {
-            logEvent(colors.red('HTTP ERROR: ' + res.statusText + ' for ') + url.blue);
+            await logEvent(colors.red('HTTP ERROR: ' + res.statusText + ' for ') + url.blue);
         } else {
             let duration = toMilliseconds(process.hrtime(start));
             var col = evaluateDuration(duration);
-            logEvent(col('duration of request ') + url.blue + col(' ### ' + duration + ' ms'));
+            await logEvent(col('duration of request ') + url.blue + col(' ### ' + duration + ' ms'));
         }
-    })
-    .catch(ex => {
-        logEvent('FETCH ERROR: '.red + ex.red);
-    });
+    }
+    catch (ex) {
+        await logEvent('FETCH ERROR: '.red + ex.red);
+    }
 }
 
 function evaluateDuration(timespan) {
