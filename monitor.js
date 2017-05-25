@@ -10,11 +10,13 @@ const nano = milli * milli * milli;
 
 var outputStream = undefined;
 
-readConfig()
-    .then((config) => {
-        outputStream = createOutputStream(config.output);
-        setInterval(run, config.interval, config);
-    });
+
+async function main() {
+    const config = await readConfig();
+    outputStream = createOutputStream(config.output);
+    setInterval(run, config.interval, config);
+}
+main();
 
 function run(config) {
     for(let endpoint of config.requests) {

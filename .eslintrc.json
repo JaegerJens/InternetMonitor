@@ -10,7 +10,8 @@
         "ecmaFeatures": {
             "jsx": false
         },
-        "sourceType": "script"
+        "sourceType": "script",
+        "ecmaVersion": 2017
     },
     "rules": {
         "no-console": "off"
