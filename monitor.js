@@ -2,6 +2,7 @@ const fetch = require('node-fetch');
 const colors = require('colors');
 const fs = require('fs');
 const os = require('os');
+const util = require('util');
 
 const configFile = 'monitor.config.json';
 /** @type {Number} */
@@ -90,14 +91,7 @@ function logEvent(event) {
     console.log(text);
     const eol = os.EOL;
     let cleanText = colors.stripColors(text);
-    return new Promise((resolve, reject) => {
-        outputStream.write(cleanText + eol, null, err => {
-            if (err) {
-                reject(err);
-            }
-            resolve();
-        });
-    });
+    return outputStream.WriteAsync(cleanText + eol, null);
 }
 
 /**
@@ -107,7 +101,9 @@ function logEvent(event) {
 function createOutputStream(filename) {
     const logFile = replaceDate(filename);
     console.log(`Logfile output: ${logFile}`.grey);
-    return fs.createWriteStream(logFile, {encoding: 'utf8', flags: 'a'});
+    let output = fs.createWriteStream(logFile, {encoding: 'utf8', flags: 'a'});
+    output.WriteAsync = util.promisify(output.write);
+    return output;
 }
 
 /**
