@@ -17,9 +17,9 @@
   "license": "ISC",
   "devDependencies": {
     "colors": "^1.1.2",
-    "eslint": "^3.17.0"
+    "eslint": "^4.1.0"
   },
   "dependencies": {
-    "node-fetch": "^1.7.0"
+    "node-fetch": "^1.7.1"
   }
 }
