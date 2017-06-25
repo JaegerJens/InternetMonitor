@@ -12,7 +12,7 @@ const milli = 1000;
 const nano = milli * milli * milli;
 
 /** @type {WriteStream} */
-var outputStream = undefined;
+let outputStream = undefined;
 
 async function main() {
     const config = await readConfig();
@@ -43,7 +43,7 @@ async function timeRequest(url) {
             await logEvent(colors.red('HTTP ERROR: ' + res.statusText + ' for ') + url.blue);
         } else {
             let duration = toMilliseconds(process.hrtime(start));
-            var col = evaluateDuration(duration);
+            let col = evaluateDuration(duration);
             await logEvent(col('duration of request ') + url.blue + col(' ### ' + duration + ' ms'));
         }
     }
@@ -122,8 +122,8 @@ function replaceDate(filename) {
  * @returns {string}
  */
 function getNowDate() {
-    var now = new Date();
-    var iso = now.toISOString().slice(0,10).replace(/-/g,'');
+    let now = new Date();
+    let iso = now.toISOString().slice(0,10).replace(/-/g,'');
     return iso;
 }
 
@@ -131,6 +131,6 @@ function getNowDate() {
  * @returns {Promise<Object>}
  */
 async function readConfig() {
-    var data = await readFileAsync(configFile, 'utf8');
+    const data = await readFileAsync(configFile, 'utf8');
     return JSON.parse(data);
 }
