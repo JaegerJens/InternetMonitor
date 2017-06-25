@@ -4,11 +4,12 @@ const fs = require('fs');
 const os = require('os');
 
 const configFile = 'monitor.config.json';
+/** @type {Number} */
 const milli = 1000;
 const nano = milli * milli * milli;
 
+/** @type {WriteStream} */
 var outputStream = undefined;
-
 
 async function main() {
     const config = await readConfig();
@@ -17,12 +18,19 @@ async function main() {
 }
 main();
 
+/**
+ * @param {Object} config 
+ */
 function run(config) {
     for(let endpoint of config.requests) {
         timeRequest(endpoint);
     }
 }
 
+/**
+ * @param {string} url
+ * @returns {Promise} 
+ */
 async function timeRequest(url) {
     await logEvent('start request '.grey + url.blue);
     let start = process.hrtime();
@@ -41,6 +49,10 @@ async function timeRequest(url) {
     }
 }
 
+/**
+ * @param {Number} timespan
+ * @returns {Color}
+ */
 function evaluateDuration(timespan) {
     let col = colors.green;
     if (timespan > 100) {
@@ -52,16 +64,27 @@ function evaluateDuration(timespan) {
     return col;
 }
 
+/**
+ * @returns {string}
+ */
 function timestamp() {
     let now = new Date();
     return '[' + now.toISOString() + '] ';
 }
 
+/**
+ * @param {Number} hrtime
+ * @returns {Number}
+ */
 function toMilliseconds(hrtime) {
     let ms = hrtime[0] * milli + hrtime[1] * milli / nano; // duration in milliseconds
     return ms;
 }
 
+/**
+ * @param {string} event
+ * @returns {Promise}
+ */
 function logEvent(event) {
     let text = colors.magenta(timestamp()) + event;
     console.log(text);
@@ -77,24 +100,38 @@ function logEvent(event) {
     });
 }
 
+/**
+ * @param {string} filename
+ * @returns {WriteStream}
+ */
 function createOutputStream(filename) {
     const logFile = replaceDate(filename);
     console.log(`Logfile output: ${logFile}`.grey);
     return fs.createWriteStream(logFile, {encoding: 'utf8', flags: 'a'});
 }
 
+/**
+ * @param {string} filename
+ * @returns {string}
+ */
 function replaceDate(filename) {
     const variable = "{date}";
     let now = getNowDate();
     return filename.replace(variable, now);
 }
 
+/**
+ * @returns {string}
+ */
 function getNowDate() {
     var now = new Date();
     var iso = now.toISOString().slice(0,10).replace(/-/g,'');
     return iso;
 }
 
+/**
+ * @returns {Promise<Object>}
+ */
 function readConfig() {
     return new Promise((resolve, reject) => {
         fs.readFile(configFile, 'utf8', (err, data) => {
