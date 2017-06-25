@@ -4,6 +4,8 @@ const fs = require('fs');
 const os = require('os');
 const util = require('util');
 
+const readFileAsync = util.promisify(fs.readFile);
+
 const configFile = 'monitor.config.json';
 /** @type {Number} */
 const milli = 1000;
@@ -128,14 +130,7 @@ function getNowDate() {
 /**
  * @returns {Promise<Object>}
  */
-function readConfig() {
-    return new Promise((resolve, reject) => {
-        fs.readFile(configFile, 'utf8', (err, data) => {
-            if (err) {
-                reject(err);
-            }
-            let config = JSON.parse(data);
-            resolve(config);
-        })
-    });
+async function readConfig() {
+    var data = await readFileAsync(configFile, 'utf8');
+    return JSON.parse(data);
 }
