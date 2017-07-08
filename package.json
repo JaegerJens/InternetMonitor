@@ -17,10 +17,10 @@
   "license": "ISC",
   "devDependencies": {
     "colors": "^1.1.2",
-    "eslint": "^4.1.0"
+    "eslint": "^4.1.1"
   },
   "dependencies": {
-    "@types/node": "^8.0.2",
+    "@types/node": "^8.0.9",
     "node-fetch": "^1.7.1"
   }
 }
