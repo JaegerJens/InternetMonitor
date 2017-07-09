@@ -1,5 +1,6 @@
 const fetch = require('node-fetch');
 const colors = require('colors');
+const notifier = require('node-notifier');
 const fs = require('fs');
 const os = require('os');
 const util = require('util');
@@ -13,6 +14,9 @@ const nano = milli * milli * milli;
 
 /** @type {WriteStream} */
 let outputStream = undefined;
+
+/** @type {boolean} */
+let isOffline = false;
 
 async function main() {
     const config = await readConfig();
@@ -40,7 +44,7 @@ async function timeRequest(url) {
     try {
         const res = await fetch(url);
         if (!res.ok) {
-            await logEvent(colors.red('HTTP ERROR: ' + res.statusText + ' for ') + url.blue);
+            await logError('HTTP', res.statusText + ' for ' + url.blue);
         } else {
             let duration = toMilliseconds(process.hrtime(start));
             let col = evaluateDuration(duration);
@@ -48,7 +52,7 @@ async function timeRequest(url) {
         }
     }
     catch (ex) {
-        await logEvent('FETCH ERROR: '.red + ex.red);
+        await logError('FETCH', ex);
     }
 }
 
@@ -82,6 +86,14 @@ function timestamp() {
 function toMilliseconds(hrtime) {
     let ms = hrtime[0] * milli + hrtime[1] * milli / nano; // duration in milliseconds
     return ms;
+}
+
+async function logError(category, errormessage) {
+    if (!isOffline) {
+        notifier.notify('Internet is Offline!');
+        isOffline = true;
+    }
+    await logEvent(`${category} ERROR: ${errormessage}`.red);
 }
 
 /**
