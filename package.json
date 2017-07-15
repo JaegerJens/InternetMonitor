@@ -4,7 +4,7 @@
   "description": "monitor internet status with http requests",
   "main": "monitor.js",
   "scripts": {
-    "lint": "eslint monitor.js",
+    "lint": "eslint monitor.js lib/log.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
