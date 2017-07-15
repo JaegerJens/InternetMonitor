@@ -7,16 +7,20 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
+            "name": "Debug monitor",
             "program": "${workspaceRoot}\\monitor.js",
             "console": "integratedTerminal"
         },
         {
             "type": "node",
-            "request": "attach",
-            "name": "Attach to Process",
-            "address": "localhost",
-            "port": 5858
+            "request": "launch",
+            "name": "Debug lint",
+            "program": "${workspaceRoot}/node_modules/eslint/bin/eslint.js",
+            "args": [
+                "monitor.js"
+            ],
+            "stopOnEntry": true,
+            "console": "integratedTerminal"
         }
     ]
 }
