@@ -59,14 +59,14 @@ async function timeRequest(url) {
         const res = await fetch(url);
         if (!res.ok) {
             notifyOffline();
-            await log.logError('HTTP', res.statusText + ' for ' + url.blue);
-        } else {
-            let duration = log.toMilliseconds(process.hrtime(start));
-            let col = evaluateDuration(duration);
-            let urlFormated = url.padEnd(urlMaxLength).blue;
-            var durationFormated = col(('' + Math.round(duration * 100) / 100).padStart(8) + ' ms');
-            await log.logEvent(col('duration of request ') + urlFormated + col(' ### ') +  durationFormated);
+            return await log.logError('HTTP', res.statusText + ' for ' + url.blue);
         }
+        
+        let duration = log.toMilliseconds(process.hrtime(start));
+        let col = evaluateDuration(duration);
+        let urlFormated = url.padEnd(urlMaxLength).blue;
+        var durationFormated = col(('' + Math.round(duration * 100) / 100).padStart(8) + ' ms');
+        await log.logEvent(col('duration of request ') + urlFormated + col(' ### ') +  durationFormated);
     }
     catch (ex) {
         notifyOffline();
