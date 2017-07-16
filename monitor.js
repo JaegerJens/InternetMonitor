@@ -21,6 +21,8 @@ let isOffline = false;
 */
 const offlineTimeout = 5 * 60 * 1000;
 
+let urlMaxLength = 0;
+
 /**
  * @param {Object} config 
  */
@@ -38,6 +40,11 @@ function notifyOffline() {
     }
 }
 
+function computeUrlMaxLength(config) {
+    let lengthList = config.requests.map(r => r.length);
+    urlMaxLength = Math.max.apply(null, lengthList);
+}
+
 /**
  * @param {string} url
  * @returns {Promise} 
@@ -53,7 +60,8 @@ async function timeRequest(url) {
         } else {
             let duration = log.toMilliseconds(process.hrtime(start));
             let col = evaluateDuration(duration);
-            await log.logEvent(col('duration of request ') + url.blue + col(' ### ' + duration + ' ms'));
+            let urlFormated = url.padEnd(urlMaxLength).blue;
+            await log.logEvent(col('duration of request ') + urlFormated + col(' ### ' + duration + ' ms'));
         }
     }
     catch (ex) {
@@ -87,6 +95,7 @@ async function readConfig() {
 
 async function main() {
     const config = await readConfig();
+    computeUrlMaxLength(config);
     log.openLogFile(config.output);
     setInterval(run, config.interval, config);
 }
