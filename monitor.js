@@ -50,7 +50,10 @@ function computeUrlMaxLength(config) {
  * @returns {Promise} 
  */
 async function timeRequest(url) {
-    await log.logEvent('start request '.grey + url.blue);
+    if (isOffline) {
+        await log.logEvent('start request '.grey + url.blue);
+    }
+
     let start = process.hrtime();
     try {
         const res = await fetch(url);
