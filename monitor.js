@@ -65,7 +65,7 @@ async function timeRequest(url) {
         let duration = log.toMilliseconds(process.hrtime(start));
         let col = evaluateDuration(duration);
         let urlFormated = url.padEnd(urlMaxLength).blue;
-        var durationFormated = col(('' + Math.round(duration * 100) / 100).padStart(8) + ' ms');
+        var durationFormated = col(('' + Math.round(duration)).padStart(5) + ' ms');
         await log.logEvent(col('duration of request ') + urlFormated + col(' ### ') +  durationFormated);
     }
     catch (ex) {
