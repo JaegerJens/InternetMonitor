@@ -34,7 +34,7 @@ function run(config) {
 
 function notifyOffline() {
     if (!isOffline) {
-        notifier.notify('Internet is Offline!');
+        notifier.notify({title: 'Internet Monitor', message:'Internet is Offline!'});
         isOffline = true;
         setTimeout(() => isOffline = false, offlineTimeout);
     }
@@ -61,7 +61,6 @@ async function timeRequest(url) {
             notifyOffline();
             return await log.logError('HTTP', res.statusText + ' for ' + url.blue);
         }
-        
         let duration = log.toMilliseconds(process.hrtime(start));
         let col = evaluateDuration(duration);
         let urlFormated = url.padEnd(urlMaxLength).blue;
@@ -76,7 +75,7 @@ async function timeRequest(url) {
 
 /**
  * @param {Number} timespan
- * @returns {Color}
+ * @returns {Colors}
  */
 function evaluateDuration(timespan) {
     let col = colors.green;
