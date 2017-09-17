@@ -79,10 +79,10 @@ async function timeRequest(url) {
  */
 function evaluateDuration(timespan) {
     let col = colors.green;
-    if (timespan > 100) {
+    if (timespan > 150) {
         col = colors.yellow;
     }
-    if (timespan > 200) {
+    if (timespan > 300) {
         col = colors.red;
     }
     return col;
