@@ -1,7 +1,9 @@
 {
     "requests": [
         "http://192.168.178.1/css/rd/images/fritzLogo.svg",
-        "https://www.heise.de/icons/ho/heise_online_logo_top.gif"
+        "https://www.heise.de/icons/ho/link_list_bullet.png",
+        "http://cdn.www.spiegel.de/producing/andere/i-icon.png",
+        "https://www.google.com/textinputassistant/tia.png"
     ],
     "interval": 3000,
     "output": "./log/status.{date}.log"
