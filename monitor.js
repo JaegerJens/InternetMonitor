@@ -1,6 +1,5 @@
 const fetch = require('node-fetch');
 const colors = require('colors');
-const notifier = require('node-notifier');
 const fs = require('fs');
 const util = require('util');
 const log = require('./lib/log');
@@ -32,14 +31,6 @@ function run(config) {
     }
 }
 
-function notifyOffline() {
-    if (!isOffline) {
-        notifier.notify({title: 'Internet Monitor', message:'Internet is Offline!'});
-        isOffline = true;
-        setTimeout(() => isOffline = false, offlineTimeout);
-    }
-}
-
 function computeUrlMaxLength(config) {
     let lengthList = config.requests.map(r => r.length);
     urlMaxLength = Math.max.apply(null, lengthList);
@@ -58,7 +49,6 @@ async function timeRequest(url) {
     try {
         const res = await fetch(url);
         if (!res.ok) {
-            notifyOffline();
             return await log.logError('HTTP', res.statusText + ' for ' + url.blue);
         }
         let duration = log.toMilliseconds(process.hrtime(start));
@@ -68,7 +58,6 @@ async function timeRequest(url) {
         await log.logEvent(col('duration of request ') + urlFormated + col(' ### ') +  durationFormated);
     }
     catch (ex) {
-        notifyOffline();
         await log.logError('FETCH', ex);
     }
 }
