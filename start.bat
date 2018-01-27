@@ -1,1 +1,1 @@
-node monitor.js
+node_modules\.bin\ts-node monitor.ts
