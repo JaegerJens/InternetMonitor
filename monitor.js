@@ -75,7 +75,7 @@ async function timeRequest(url) {
 
 /**
  * @param {Number} timespan
- * @returns {Colors}
+ * @returns {colors.Color}
  */
 function evaluateDuration(timespan) {
     let col = colors.green;
